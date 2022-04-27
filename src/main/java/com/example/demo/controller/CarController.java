@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Car;
+import com.example.demo.domain.dto.DTOCar;
 import com.example.demo.dto.DTOFilter;
 import com.example.demo.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class CarController {
     }
 
     @GetMapping("/api/car")
-    public List<Car> getAllCars(){
+    public List<DTOCar> getAllCars(){
         return carService.getAllCars();
     }
 
@@ -55,5 +56,11 @@ public class CarController {
                               @RequestBody Car car) throws Exception{
         return carService.updateCarById(id,car);
     }
+
+//    @PatchMapping("/api/car/{car}/owner/{owner}")
+//    public Car saveOwnerToACar(@PathVariable("car") int carId,
+//                               @PathVariable("owner") int ownerId) throws Exception {
+//        return carService.saveOwnerToACar(carId,ownerId);
+//    }
 
 }

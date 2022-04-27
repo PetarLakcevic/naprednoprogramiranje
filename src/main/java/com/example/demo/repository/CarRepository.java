@@ -17,4 +17,6 @@ public interface CarRepository extends JpaRepository<Car,Integer> {
     List<Car> findByYearAndManufacturer(int year, String manufacturer);
 
     List<Car> findByYearAndManufacturerIgnoreCase(int year, String manufacturer);
+
+    List<Car> findByIdIn(int[] ids);
 }

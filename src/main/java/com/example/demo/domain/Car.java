@@ -1,8 +1,8 @@
 package com.example.demo.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 
 @Entity
 public class Car {
@@ -12,15 +12,30 @@ public class Car {
     public String manufacturer;
     public String model;
     public int year;
+    public String vin;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ownerId")
+    @JsonIgnore
+    public Owner owner;
 
     public Car() {
     }
 
-    public Car(int id, String manufacturer, String model, int year) {
-        this.id = id;
+    public Car(String manufacturer, String model, int year, String vin, Owner owner) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.year = year;
+        this.vin = vin;
+        this.owner = owner;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
     }
 
     public int getId() {
@@ -53,5 +68,13 @@ public class Car {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 }

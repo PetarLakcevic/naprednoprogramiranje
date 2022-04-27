@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Car;
+import com.example.demo.domain.Owner;
+import com.example.demo.domain.dto.DTOCar;
 import com.example.demo.dto.DTOFilter;
 import com.example.demo.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,24 @@ import java.util.Optional;
 public class CarService {
     @Autowired
     private CarRepository carRepository;
+//    @Autowired
+//    private OwnerService ownerService;
 
     public Car createACar(Car newCar) {
         return carRepository.save(newCar);
     }
 
-    public List<Car> getAllCars() {
-        return carRepository.findAll();
+    public List<DTOCar> getAllCars() {
+        List<Car> carList = carRepository.findAll();
+        List<DTOCar> dtoCarList = new ArrayList<>();
+
+        for (Car car : carList){
+            dtoCarList.add(new DTOCar(car.getManufacturer(),
+                    car.getModel(),car.getYear()));
+        }
+
+        return dtoCarList;
+
     }
 
     public Car getCarById(int id) throws Exception {
@@ -58,5 +71,17 @@ public class CarService {
     public List<Car> getCarsFiltered(DTOFilter dtoFilter) {
         return carRepository.findByYearAndManufacturerIgnoreCase
                 (dtoFilter.getYear(),dtoFilter.getManufacturer());
+    }
+
+//    public Car saveOwnerToACar(int carId, int ownerId) throws Exception {
+//        Car car = getCarById(carId);
+//        Owner owner = ownerService.findOwnerById(ownerId);
+//
+//        car.setOwner(owner);
+//        return carRepository.save(car);
+//    }
+
+    public List<Car> findCarsByIds(int[] ids){
+        return carRepository.findByIdIn(ids);
     }
 }
